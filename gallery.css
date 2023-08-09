@@ -179,7 +179,7 @@ img {
 
 .wrapper {
    margin-top: 150px;
-   width: 60%;
+   max-width: 600px;
    padding: 50px 40px;
    background-color: var(--main-color);
    position: relative;
@@ -294,4 +294,10 @@ hr {
     font-size: 14px; /* Decrease the font size for smaller screens */
     padding: 8px; /* Adjust padding for smaller buttons */
   }
+}
+@media only screen and (max-width: 768px) {
+    .wrapper {
+        margin: 20px auto;
+        padding: 30px;
+    }
 }

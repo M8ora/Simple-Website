@@ -158,7 +158,7 @@ img {
      flex-direction: column;
    }
    .container {
-     width: 40rem;
+     width: 100%;
      height: 100%;
      grid-auto-rows: 9rem;
    }

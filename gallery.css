@@ -271,3 +271,27 @@ hr {
 {
     box-shadow: 0 10px 10px rgb(230, 0, 0);
 }
+
+/* Add the following media query block at the end of your CSS */
+
+@media only screen and (max-width: 768px) {
+  .contain {
+    width: 90%; /* Adjust the width for smaller screens */
+    padding: 20px;
+  }
+  
+  .quote {
+    font-size: 30px; /* Decrease the font size for smaller screens */
+  }
+  
+  .author {
+    font-size: 20px; /* Decrease the font size for smaller screens */
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .next {
+    font-size: 14px; /* Decrease the font size for smaller screens */
+    padding: 8px; /* Adjust padding for smaller buttons */
+  }
+}

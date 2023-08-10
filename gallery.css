@@ -91,7 +91,7 @@ img {
 .container {
    display: grid;
    width: 100%;
-   height: 100%;
+   height: auto;
    grid-template-columns: repeat(3, 1fr);
    grid-auto-rows: 9.5rem;
 }

@@ -83,7 +83,7 @@ img {
 }
 .slider-game {
    width: 100%;
-   display: flex;
+   display: relative;
    justify-content: space-between;
    margin: 0 auto;
    margin-top: 5%;

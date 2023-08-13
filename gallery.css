@@ -350,8 +350,8 @@ hr {
  }
  .card-before {
    background-color: #f4c531;
-   font-size: 4.5rem;
-   font-weight: 600;
+   font-size: 3.5rem;
+   font-weight: 400;
    color: var(--sec-bg-color);
  }
  .card-after {

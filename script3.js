@@ -1,5 +1,4 @@
 var MemoryGame = (function() {
-    // Your Memory Game JavaScript code here
   
     const memoryMoves = document.getElementById("moves-count");
     const timeValue = document.getElementById("time");
@@ -366,5 +365,3 @@ const restartGame = () => {
         container.classList.add("hide");
       };
   })();
-  
-  

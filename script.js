@@ -82,10 +82,7 @@ const getNewQuote = async () =>
     //function to dynamically display the quote and the author
     text.innerHTML=quote;
     author.innerHTML="~ "+auth;
-
-    //tweet the quote
-    tweetButton.href="https://twitter.com/intent/tweet?text="+quote+" ~ "+auth;
-
 }
 
 getNewQuote();
+

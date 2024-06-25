@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Scripting Language</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background: url('img/quiz1.jpg') no-repeat center center fixed;
+        background-size: cover;
+        padding-top: 100px;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
+      .head {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px 5%;
+        background: transparent;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        z-index: 100;
+      }
+
+      .logor {
+        font-size: 30px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.3s;
+      }
+      .socials {
+        margin: 0 auto 0 50px;
+      }
+      .socials a {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: 1px solid #a39191;
+        border-radius: 6px;
+        text-decoration: none;
+        margin-right: 10px;
+        transition: background 0.5s, border-color 0.5s;
+      }
+      .socials a:hover {
+        background: #fff;
+      }
+      .socials a i {
+        font-size: 20px;
+        background: transparent;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+      .socials a:hover i {
+        background: #444;
+      }
+      .iconics {
+        width: 35px;
+        height: 35px;
+      }
+      .navbaru {
+        display: flex;
+        gap: 20px;
+      }
+      .navbaru a {
+        text-decoration: none;
+        font-size: 16px;
+        color: #fff;
+        padding: 8px 12px;
+        transition: 0.3s;
+      }
+      .navbaru a:hover {
+        color: #007bff;
+      }
+      .start-screen,
+      .score-container {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+      }
+      button {
+        border: none;
+        outline: none;
+        cursor: pointer;
+      }
+      #start-button,
+      #restart {
+        font-size: 1.3em;
+        padding: 0.5em 1.8em;
+        border-radius: 0.2em;
+      }
+      #restart {
+        margin-top: 0.9em;
+      }
+      #display-container {
+        background-color: #ffffff;
+        padding: 3.1em 1.8em;
+        width: 80%;
+        max-width: 37.5em;
+        margin: 0 auto;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 55%;
+        left: 50%;
+        border-radius: 0.6em;
+      }
+      .header {
+        margin-bottom: 1.8em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 0.6em;
+        border-bottom: 0.1em solid #c0bfd2;
+      }
+      .timer-div {
+        background-color: #e1f5fe;
+        width: 7.5em;
+        border-radius: 1.8em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.7em 1.8em;
+      }
+      .question {
+        margin-bottom: 1.25em;
+        font-weight: 600;
+      }
+      .option-div {
+        font-size: 0.9em;
+        width: 100%;
+        padding: 1em;
+        margin: 0.3em 0;
+        text-align: left;
+        outline: none;
+        background: transparent;
+        border: 1px solid #c0bfd2;
+        border-radius: 0.3em;
+      }
+      .option-div:disabled {
+        color: #000000;
+        cursor: not-allowed;
+      }
+      #next-button {
+        font-size: 1em;
+        margin-top: 1.5em;
+        background-color: #0a69ed;
+        color: #ffffff;
+        padding: 0.7em 1.8em;
+        border-radius: 0.3em;
+        float: right;
+      }
+      .hide {
+        display: none;
+      }
+      .incorrect {
+        background-color: #ffdde0;
+        color: #d32f2f;
+        border-color: #d32f2f;
+      }
+      .correct {
+        background-color: #e7f6d5;
+        color: #689f38;
+        border-color: #689f38;
+      }
+      #user-score {
+        font-size: 1.5em;
+        color: #ffffff;
+      }
+      .floating-table {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 300px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-y: auto;
+      max-height: 80%;
+      }
+      .floating-table h2 {
+          margin-bottom: 16px;
+          text-align: center;
+      }
+      .floating-table table {
+          width: 100%;
+          border-collapse: collapse;
+      }
+      .floating-table th, .floating-table td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+      .floating-table th {
+          background-color: #f4f4f4;
+      }
+      .user-scores {
+          position: fixed;
+          top: 50%;
+          right: 1.5%;
+          transform: translateY(-50%);
+          background-color: #fff;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-scores th,
+      .user-scores td {
+          padding: 8px 12px;
+          text-align: left;
+      }
+
+      .user-scores th {
+          font-weight: bold;
+          border-bottom: 2px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="head">
+      <a href="#" class="logor">Social</a>
+      <div class="socials">
+        <a href="https://rb.gy/uytvve"><i><img src="img/fb_icon.png" class="iconics" alt=""></i></a>
+        <a href="https://rb.gy/unpzyi"><i><img src="img/fb_icon.png" class="iconics" alt=""></i></a>
+        <a href="https://rb.gy/7ylq60"><i><img src="img/fb_icon.png" class="iconics" alt=""></i></a>
+      </div>
+      <nav class="navbaru">
+        <a href="index.html">Home</a>
+        <a href="agecalc.html">Age Calculator</a>
+        <a href="gpaCal.html">GPA Calculator</a>
+        <a href="#">Hoho</a>
+        <a href="udashboard.php">Dashboard</a>
+      </nav>
+    </header>
+    <div class="start-screen">
+      <button id="start-button">Start</button>
+    </div>
+    <div id="display-container" class="hide">
+      <div class="header">
+        <div class="number-of-count">
+          <span class="number-of-question">1 of 20 questions</span>
+        </div>
+        <div class="timer-div">
+          <img src="img/timer_icon.png" />
+          <span class="time-left">300s</span>
+        </div>
+      </div>
+      <div id="container">
+      </div>
+      <button id="next-button" class="hide">Next</button>
+    </div>
+    <div class="floating-table" id="top-players-table">
+            <h2>Top Players</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Grade & Section</th>
+                        <th>High Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Top players here -->
+                </tbody>
+            </table>
+        </div>
+    <div class="score-container hide">
+      <div id="user-score">Demo Score</div>
+      <button id="restart">Restart</button>
+    </div>
+
+    <div class="user-scores">
+        <table id="user-scores-table">
+            <thead>
+            <tr>
+                <th>Game</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            <tbody id="user-scores-list"></tbody>
+        </table>
+    </div>
+
+    <script>
+      let questions = [
+        { question: "Web scripting refers to the process of embedding scripts directly into web pages.", options: ["True", "False"], correct: "True" },
+        { question: "Client-side scripts are executed by the web server before sending the response to the client.", options: ["True", "False"], correct: "False" },
+        { question: "JavaScript is the most widely used scripting language for client-side scripting.", options: ["True", "False"], correct: "True" },
+        { question: "Server-side scripting languages can access and modify databases.", options: ["True", "False"], correct: "True" },
+        { question: "PHP is a scripting language commonly used for server-side scripting.", options: ["True", "False"], correct: "True" },
+        
+        // Multiple Choice
+        { question: "Which of the following is NOT a common feature of client-side scripting?", options: ["Validating user input", "Creating interactive elements", "Accessing and modifying server-side data", "Dynamically updating web page content"], correct: "Accessing and modifying server-side data" },
+        { question: "What scripting language is known for its ease of use and concise syntax?", options: ["JavaScript ", "Python ", "PHP ", "Ruby"], correct: "Python" },
+        { question: "What does the acronym PHP originally stand for?", options: ["Personal Home Page", "Programming Hypertext Processor", "Personal Hypertext Platform", "Personal Hypertext Platform"], correct: "Powerful Hypertext Preprocessor" },
+        { question: "Ruby is a scripting language known for its focus on:", options: ["Speed and performance", "Object-oriented programming", "Ease of use for beginners", "Extensive security features"], correct: "Object-oriented programming" },
+        { question: "What is the name of the specification most commonly used for CGI", options: ["PERL", "PHP", "JavaScript", "C++"], correct: "PERL" },
+        { question: "Which of the following is NOT a core component of a web service?", options: ["XML schema", "HTTP protocol", "Database connection", "WSDL document"], correct: "Database connection" },
+        { question: "Which scripting language is primarily used for server-side scripting?", options: ["JavaScript (with Node.js)", "Python", "PHP", "HTML"], correct: "HTML" },
+        { question: "What is the purpose of an XML schema in web services?", options: ["Defines the structure and format of data exchanged", "Enables remote procedure calls", "Provides a secure communication channel", "Defines the user interface for the web service"], correct: "Defines the structure and format of data exchanged" },
+        { question: "What is the key difference between SOAP and RESTful web services?", options: ["SOAP uses XML for data exchange, while REST uses JSON.", "SOAP is stateless, while RESTful web services are stateful.", "SOAP is simpler and less complex than REST.", "SOAP is specifically designed for remote procedure calls."], correct: "SOAP uses XML for data exchange, while REST uses JSON." },
+        { question: "Which messaging protocol is known for its simplicity and use of XML-RPC for remote procedure calls?", options: ["SOAP", "REST", "XML-RPC", "JSON"], correct: "XML-RPC" },
+        { question: "What is the benefit of using a web service for data exchange between applications?", options: ["Requires less development effort compared to custom integrations", "Enables platform-independent communication", "Offers built-in security features", "All of the above"], correct: "All of the above" },
+        { question: "Which of the following is NOT a common feature of client-side scripting?", options: ["Validating user input", "Creating interactive elements", "Accessing and modifying server-side data", "Dynamically updating web page content"], correct: "Accessing and modifying server-side data" },
+        { question: "What scripting engine is commonly used by web browsers to interpret and execute JavaScript code?", options: ["Python Engine", "V8 Engine", "PHP Engine", "Ruby Engine"], correct: "V8 Engine" },
+        { question: "What is the main advantage of using a scripting language like PHP compared to a compiled language like C++ for web development?", options: ["Faster execution speed", "More robust and secure", "Easier to learn and write code", "Offers lower memory usage"], correct: "Easier to learn and write code" },
+        { question: "Which scripting language is known for its focus on object-oriented programming principles?", options: ["JavaScript", "Python", "PHP", "Ruby"], correct: "Ruby" },
+        { question: "What is the primary function of a Common Gateway Interface (CGI) script in web development?", options: ["Interprets and executes client-side scripting code", "Provides a standard way for web servers to interact with external programs", "Defines the structure of web page elements", "Enables secure communication between web servers and clients"], correct: "Provides a standard way for web servers to interact with external program" },
+        { question: "Which of the following is NOT a cloud computing service model?", options: ["Infrastructure as a Service (IaaS)", "Platform as a Service (PaaS)", "Software as a Service (SaaS)", "Desktop as a Service (DaaS)"], correct: "Desktop as a Service (DaaS)" },
+        { question: "What is the benefit of using a virtual machine in cloud computing?", options: ["Allows running any operating system", "Provides a scalable and flexible computing environment", "Offers high performance and reliability", "All of the above"], correct: "All of the above" },
+        { question: "What cloud service provider is known for its high number of data centers spread around the world?", options: ["Amazon Web Services (AWS)", "Microsoft Azure", "Google Cloud Platform (GCP)", "All of the above"], correct: "All of the above" },
+        { question: "What is the main advantage of using a pay-as-you-go pricing model in cloud computing?", options: ["Lower upfront costs", "Ability to scale resources up or down as needed", "Improved security and reliability", "All of the above"], correct: "All of the above" },
+        { question: "What security concern is common when using cloud computing services?", options: ["Data breaches and leaks", "Limited control over infrastructure", "Vendor lock-in", "All of the above"], correct: "All of the above" },
+        { question: "What is the primary purpose of a container in cloud computing?", options: ["Provides a virtualized environment for running applications", "Packages an application with its dependencies for easy deployment", "Offers high availability and scalability", "Enables secure communication between cloud services"], correct: "Packages an application with its dependencies for easy deployment" },
+        { question: "Which cloud service provider offers a managed service for container orchestration?", options: ["Amazon Elastic Container Service (ECS)", "Microsoft Azure Container Instances (ACI)", "Google Kubernetes Engine (GKE)", "All of the above"], correct: "All of the above" },
+        { question: "What is the key difference between Infrastructure as a Service (IaaS) and Platform as a Service (PaaS)?", options: ["IaaS provides virtual machines, while PaaS offers pre-configured environments", "IaaS is more expensive than PaaS", "PaaS offers more control than IaaS", "IaaS is easier to manage than PaaS"], correct: "IaaS provides virtual machines, while PaaS offers pre-configured environments" },
+        { question: "How can cloud computing benefit a business?", options: ["Reduced IT infrastructure costs", "Increased scalability and flexibility", "Improved disaster recovery capabilities", "All of the above"], correct: "All of the above" },
+        { question: "What is a common challenge associated with migrating to cloud computing?", options: ["Security concerns and data migration", "Vendor lock-in and limited customization", "Lack of skilled IT staff for cloud management", "All of the above"], correct: "All of the above" },
+        { question: "What is the primary goal of user interface (UI) design?", options: ["Create visually appealing web pages", "Ensure consistency across all web pages", "Provide a positive and user-friendly experience", "Improve website loading speed"], correct: "Provide a positive and user-friendly experience" },
+        { question: "What is the benefit of using clear and concise error messages in web design?", options: ["Improves the aesthetic appeal of the interface", "Reduces the need for user support", "Helps users understand and resolve issues", "All of the above"], correct: "Helps users understand and resolve issues" },
+        { question: "What UI design principle encourages users to feel in control of their experience?", options: ["Consistency", "User feedback", "Minimalism", "Accessibility"], correct: "User feedback" },
+        { question: "What does the acronym HTML stand for?", options: ["Hypertext Markup Language", "Hypertext Markup Link", "Hypertext Markup Logic", "Hypertext Markup Layer"], correct: "Hypertext Markup Language" },
+        { question: "What is the purpose of a wrapper element in HTML?", options: ["Defines the head section of a webpage", "Groups and organizes content on a page", "Embeds images or videos", "Provides interactive elements"], correct: "Groups and organizes content on a page" },
+        { question: "What is the benefit of using a dedicated proxy server compared to a shared proxy server?", options: ["Increased security and privacy", "Faster connection speeds", "Lower cost", "All of the above"], correct: "Increased security and privacy" },
+        { question: " Briefly describe the steps involved in creating a basic wrapper element in HTML.", answer: "1. Choose an appropriate HTML tag for the wrapper, such as <div>, <section>, or <article>, depending on the semantic meaning of the content you want to group.  2. Add opening and closing tags for the chosen element.  3. Place the content you want to wrap within the opening and closing tags of the wrapper element." },
+        { question: "Explain the difference between a residential proxy and a datacenter proxy.", answer: "Residential proxy: These proxies originate from individual user devices located around the world, offering a higher level of anonymity and potentially better geo-targeting capabilities. However, they can be slower and less reliable due to potential bandwidth limitations and uptime issues.  Datacenter proxy: These proxies are located in data centers owned by proxy service providers. They are generally faster and more reliable than residential proxies, but they offer less anonymity as their origin is easily identifiable as a data center." },
+        { question: "What is the role of responsive web design (RWD) in web development?", answer: "Responsive web design (RWD) is an approach that ensures a website adapts its layout and functionality to different screen sizes and devices (desktop, tablets, mobile phones). This provides a consistent and optimal user experience regardless of the device used to access the website." },
+
+
+
+        
+        // Identification
+        { question: "What is the name of the protocol that defines a standard structure for requests and responses in SOAP web services?", options: [], correct: "SOAP", isIdentification: true },
+        { question: "Briefly describe the difference between client-side and server-side scripting.", options: [], correct: ["Client-side scripting runs on the user's browser, while server-side scripting runs on the web server.", "runs on the user's browser, runs on the web server."], isIdentification: true },
+        { question: "List two examples of popular scripting languages used in web development.", options: [], correct: "Javascript, PHP, Ruby, Python", isIdentification: true }
+
+        ];
+
+      function getRandomQuestions() {
+        let shuffled = questions.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 20);
+      }
+
+      let currentQuestion = 0;
+      let score = 0;
+      let selectedQuestions = [];
+      let timeLeft = 300;
+      let timer;
+
+      const startButton = document.getElementById("start-button");
+      const displayContainer = document.getElementById("display-container");
+      const container = document.getElementById("container");
+      const nextButton = document.getElementById("next-button");
+      const userScore = document.getElementById("user-score");
+      const scoreContainer = document.querySelector(".score-container");
+      const restartButton = document.getElementById("restart");
+      const topPlayersTable = document.getElementById("top-players-table");
+
+      startButton.addEventListener("click", startGame);
+      nextButton.addEventListener("click", handleNextButton);
+      restartButton.addEventListener("click", restartGame);
+
+      function startGame() {
+        selectedQuestions = shuffleArray(questions).slice(0, 20);
+        selectedQuestions = getRandomQuestions();
+        currentQuestion = 0;
+        score = 0;
+        timeLeft = 300;
+        startButton.parentElement.classList.add("hide");
+        nextButton.classList.add("hide");
+        displayContainer.classList.remove("hide");
+        scoreContainer.classList.add("hide");
+        displayQuestion();
+        startTimer();
+      }
+      function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+      }
+
+      function displayQuestion() {
+      document.querySelector(".number-of-question").textContent = `${currentQuestion + 1} of ${selectedQuestions.length} questions`;
+      const question = selectedQuestions[currentQuestion];
+      let optionsHtml = '';
+
+      if (question.isIdentification) {
+        optionsHtml = `<input type="text" class="option-div identification-input" placeholder="Your answer...">`;
+        nextButton.classList.remove("hide");
+      } else {
+        optionsHtml = question.options.map((option, index) => `
+          <button class="option-div" onclick="checkAnswer('${option}', ${index})">${option}</button>
+        `).join('')
+      }
+
+      container.innerHTML = `
+        <div class="question">${question.question}</div>
+        ${optionsHtml}
+      `;
+    }
+
+    function checkAnswer(option, index) {
+      const question = selectedQuestions[currentQuestion];
+      const isCorrect = question.isIdentification 
+        ? document.querySelector('.identification-input').value.trim().toLowerCase() === question.correct.trim().toLowerCase()
+        : option === question.correct;
+
+      if (isCorrect) {
+        score++;
+        if (!question.isIdentification) {
+          document.querySelectorAll(".option-div")[index].classList.add("correct");
+        }
+      } else {
+        if (!question.isIdentification) {
+          document.querySelectorAll(".option-div")[index].classList.add("incorrect");
+        }
+      }
+
+      if (!question.isIdentification) {
+        document.querySelectorAll(".option-div").forEach(button => (button.disabled = true));
+      }
+      nextButton.classList.remove("hide");
+    }
+
+    function handleNextButton() {
+      const question = selectedQuestions[currentQuestion];
+      if (question.isIdentification) {
+        const userAnswer = document.querySelector('.identification-input').value.trim().toLowerCase();
+        if (userAnswer === question.correct.trim().toLowerCase()) {
+          score++;
+        }
+      }
+      currentQuestion++;
+      if (currentQuestion < selectedQuestions.length) {
+        displayQuestion();
+      } else {
+        endGame();
+      }
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        timeLeft--;
+        document.querySelector(".time-left").textContent = `${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      clearInterval(timer);
+      displayContainer.classList.add("hide");
+      scoreContainer.classList.remove("hide");
+      userScore.textContent = `Your score is ${score * 3} out of ${selectedQuestions.length * 3}`;
+      topPlayersTable.classList.remove("hide");
+      updateTopPlayersTable(score * 3);
+    }
+
+    function restartGame() {
+      scoreContainer.classList.add("hide");
+      startButton.parentElement.classList.remove("hide");
+    }
+
+    function updateTopPlayersTable(score) {
+      const tableBody = document.querySelector("#top-players-table tbody");
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `<td>Your Name</td><td>Your Grade</td><td>${score}</td>`;
+      tableBody.appendChild(newRow);
+    }
+
+    
+
+    function submitScore(score) {
+        fetch("score_update(quiz).php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ score })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log("Score submitted successfully!");
+          } else {
+            console.error("Error submitting score:", data.error);
+          }
+        });
+      }
+
+      function fetchTopPlayersForGame(game) {
+          fetch(`top_players.php?game=${game}`)
+              .then(response => response.json())
+              .then(data => {
+
+                  updateTopPlayersTable(data);
+              })
+              .catch(error => console.error("Error fetching top players:", error));
+      }
+
+      function updateTopPlayersTable(players) {
+          const tbody = document.querySelector("#top-players-table tbody");
+          tbody.innerHTML = "";
+          players.forEach(player => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
+                  <td>${player.fullname}</td>
+                  <td>${player.grade_section}</td>
+                  <td>${player.highscore}</td>
+              `;
+              tbody.appendChild(tr);
+          });
+      }
+
+      startButton.addEventListener("click", function() {
+          // Start the game
+          startGame();
+
+          // Fetch top players for the game
+          fetchTopPlayersForGame("Quiz");
+      });
+
+      // Fetch and display user's scores
+      fetch('user_scores.php')
+                .then(response => response.json())
+                .then(data => {
+                    const userScoresList = document.getElementById('user-scores-list');
+                    if (Array.isArray(data.scores)) {
+                        userScoresList.innerHTML = data.scores.map(score => `
+                            <tr>
+                                <td>${score.game}</td>
+                                <td>${score.score}</td>
+                            </tr>
+                        `).join('');
+                    }
+                })
+                .catch(error => console.error('Error fetching user scores:', error));
+
+    </script>
+  </body>
+</html>
